@@ -8,6 +8,7 @@ var Matrix = require('../../lib/type/Matrix');
 var BigNumber = require('../../lib/type/BigNumber');
 var Help = require('../../lib/type/Help');
 var ResultSet = require('../../lib/type/ResultSet');
+var math = require('../../index');
 
 describe('reviver', function () {
 
@@ -102,7 +103,7 @@ describe('reviver', function () {
 
   it('should parse a stringified Matrix', function () {
     var json = '{"mathjs":"Matrix","data":[[1,2],[3,4]]}';
-    var m = new Matrix([[1,2],[3,4]]);
+    var m = math.matrix([[1,2],[3,4]]);
 
     var obj = JSON.parse(json, reviver);
 
@@ -113,7 +114,7 @@ describe('reviver', function () {
   it('should parse a stringified Matrix containing a complex number', function () {
     var json = '{"mathjs":"Matrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]]}';
     var c = new Complex(4, 5);
-    var m = new Matrix([[1,2],[3,c]]);
+    var m = math.matrix([[1,2],[3,c]]);
 
     var obj = JSON.parse(json, reviver);
 

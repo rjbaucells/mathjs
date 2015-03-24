@@ -2,7 +2,6 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index'),
     Unit = require('../../../lib/type/Unit'),
-    Matrix = require('../../../lib/type/Matrix'),
     unit = math.unit;
 
 describe('to', function() {
@@ -45,21 +44,21 @@ describe('to', function() {
     var b = math.to(a, unit('mm'));
 
     assert.ok(b instanceof math.type.Matrix);
-    approx.deepEqual(b, new Matrix([
+    approx.deepEqual(b, math.matrix([
       [new Unit(10, 'mm').to('mm'), new Unit(20, 'mm').to('mm')],
       [new Unit(30, 'mm').to('mm'), new Unit(40, 'mm').to('mm')]
     ]));
   });
 
   it('should throw an error if converting between incompatible units', function() {
-    assert.throws(function () {math.to(unit('20 kg'), unit('cm'))});
-    assert.throws(function () {math.to(unit('20 celsius'), unit('litre'))});
-    assert.throws(function () {math.to(unit('5 cm'), unit('2 m'))});
+    assert.throws(function () {math.to(unit('20 kg'), unit('cm'));});
+    assert.throws(function () {math.to(unit('20 celsius'), unit('litre'));});
+    assert.throws(function () {math.to(unit('5 cm'), unit('2 m'));});
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
-    assert.throws(function () {math.to(unit('20 kg'))});
-    assert.throws(function () {math.to(unit('20 kg'), unit('m'), unit('cm'))});
+    assert.throws(function () {math.to(unit('20 kg'));});
+    assert.throws(function () {math.to(unit('20 kg'), unit('m'), unit('cm'));});
   });
 
   it('should throw an error if called with a non-plain unit', function() {
@@ -67,12 +66,12 @@ describe('to', function() {
   });
 
   it('should throw an error if called with a number', function() {
-    assert.throws(function () {math.to(5, unit('m'))}, TypeError);
-    assert.throws(function () {math.to(unit('5cm'), 2)}, /SyntaxError: Unknown unit "2"/);
+    assert.throws(function () {math.to(5, unit('m'));}, TypeError);
+    assert.throws(function () {math.to(unit('5cm'), 2);}, /SyntaxError: Unknown unit "2"/);
   });
 
   it('should throw an error if called with a string', function() {
-    assert.throws(function () {math.to('5cm', unit('cm'))}, TypeError);
+    assert.throws(function () {math.to('5cm', unit('cm'));}, TypeError);
   });
 
 });

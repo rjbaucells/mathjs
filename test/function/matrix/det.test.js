@@ -14,7 +14,7 @@ describe('det', function() {
   it('should calculate correctly the determinant of a NxN matrix', function() {
     assert.equal(det([5]), 5);
     assert.equal(det([[1,2],[3,4]]), -2);
-    assert.equal(det(new Matrix([[1,2],[3,4]])), -2);
+    assert.equal(det(math.matrix([[1,2],[3,4]])), -2);
     approx.equal(det([
       [-2, 2,  3],
       [-1, 1,  3],
@@ -130,7 +130,7 @@ describe('det', function() {
 
   it('should not accept arrays with dimensions higher than 2', function() {
     assert.throws(function() { det([[[1]]]); }, RangeError);
-    assert.throws(function() { det(new Matrix([[[1]]])); }, RangeError);
+    assert.throws(function() { det(math.matrix([[[1]]])); }, RangeError);
   });
 
 });

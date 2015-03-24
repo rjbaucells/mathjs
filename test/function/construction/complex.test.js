@@ -1,5 +1,4 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     complex = math.complex;
 
@@ -36,7 +35,7 @@ describe('complex', function() {
       new math.type.Complex(1, 0),
       new math.type.Complex(2, 3)
     ];
-    assert.deepEqual(complex(math.matrix([2, 1, complex(2, 3)])), new math.type.Matrix(result));
+    assert.deepEqual(complex(math.matrix([2, 1, complex(2, 3)])), math.matrix(result));
     assert.deepEqual(complex([2, 1, complex(2, 3)]), result);
   });
 
@@ -50,7 +49,7 @@ describe('complex', function() {
   });
 
   it('should throw an error if called with a string', function() {
-    assert.throws(function () {complex('no valid complex number')}, SyntaxError);
+    assert.throws(function () {complex('no valid complex number');}, SyntaxError);
   });
 
   it('should create a complex value from a boolean', function() {
@@ -58,7 +57,7 @@ describe('complex', function() {
   });
 
   it('should throw an error if called with a unit', function() {
-    assert.throws(function () {complex(math.unit('5cm'))}, /Error: Expected object with either properties re and im, or properties r and phi./);
+    assert.throws(function () {complex(math.unit('5cm'));}, /Error: Expected object with either properties re and im, or properties r and phi./);
   });
 
   it('should accept two numbers as arguments', function() {
@@ -69,11 +68,11 @@ describe('complex', function() {
   });
 
   it('should throw an error if passed two argument, one is invalid', function() {
-    assert.throws(function () {complex('string', 2)}, TypeError);
-    assert.throws(function () {complex(2, 'string')}, TypeError);
+    assert.throws(function () {complex('string', 2);}, TypeError);
+    assert.throws(function () {complex(2, 'string');}, TypeError);
   });
 
   it('should throw an error if called with more than 2 arguments', function() {
-    assert.throws(function () {complex(2,3,4)}, /TypeError: Too many arguments/);
+    assert.throws(function () {complex(2,3,4);}, /TypeError: Too many arguments/);
   });
 });

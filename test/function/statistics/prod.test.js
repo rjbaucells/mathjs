@@ -1,8 +1,6 @@
 var assert = require('assert');
 var BigNumber = require('decimal.js');
 var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
 var prod = math.prod;
 
@@ -34,7 +32,7 @@ describe('prod', function() {
   });
 
   it('should return the prod from an 1d matrix', function() {
-    assert.equal(prod(new Matrix([1,3,5,2])), 30);
+    assert.equal(prod(math.matrix([1,3,5,2])), 30);
   });
 
   it('should return the prod element from a 2d array', function() {
@@ -45,23 +43,23 @@ describe('prod', function() {
   });
 
   it('should return the prod element from a 2d matrix', function() {
-    assert.deepEqual(prod(new Matrix([
+    assert.deepEqual(prod(math.matrix([
       [ 1, 7, 2],
       [ 3, 5, 4]
     ])), 840);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
-    assert.throws(function() {prod()});
-    assert.throws(function() {prod([], 2, 3)});
+    assert.throws(function() {prod();});
+    assert.throws(function() {prod([], 2, 3);});
   });
 
   it('should throw an error if called with not yet supported argument dim', function() {
-    assert.throws(function() {prod([], 2)}, /not yet supported/);
+    assert.throws(function() {prod([], 2);}, /not yet supported/);
   });
 
   it('should throw an error if called with an empty array', function() {
-    assert.throws(function() {prod([])});
+    assert.throws(function() {prod([]);});
   });
 
 });

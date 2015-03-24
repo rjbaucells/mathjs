@@ -1,5 +1,4 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     string = math.string;
 
@@ -30,7 +29,7 @@ describe('string', function() {
 
   it('should convert the elements of a matrix to strings', function() {
     assert.deepEqual(string(math.matrix([[2,true],['hi',null]])),
-        new math.type.Matrix([['2', 'true'],['hi', 'null']]));
+        math.matrix([['2', 'true'],['hi', 'null']]));
   });
 
   it('should convert a number to string', function() {
@@ -53,7 +52,7 @@ describe('string', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {string(1,2)}, /TypeError: Too many arguments/);
-    assert.throws(function () {string(1,2,3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {string(1,2);}, /TypeError: Too many arguments/);
+    assert.throws(function () {string(1,2,3);}, /TypeError: Too many arguments/);
   });
 });

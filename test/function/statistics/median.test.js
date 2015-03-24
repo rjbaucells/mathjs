@@ -51,7 +51,7 @@ describe('median', function() {
   });
 
   it('should return the median from an 1d matrix', function() {
-    assert.equal(median(new Matrix([1,3,5,2,-5])), 2);
+    assert.equal(median(math.matrix([1,3,5,2,-5])), 2);
   });
 
   it('should return the median from a 2d array', function() {
@@ -62,7 +62,7 @@ describe('median', function() {
   });
 
   it('should return the median from a 2d matrix', function() {
-    approx.equal(median(new Matrix([
+    approx.equal(median(math.matrix([
       [ 1, 4,  7],
       [ 3, 0,  5]
     ])), 3.5);

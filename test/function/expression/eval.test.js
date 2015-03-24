@@ -4,7 +4,6 @@ var approx = require('../../../tools/approx');
 var error = require('../../../lib/error/index');
 var math = require('../../../index');
 var Complex = math.type.Complex;
-var Matrix = math.type.Matrix;
 var Unit = math.type.Unit;
 var ResultSet = math.type.ResultSet;
 
@@ -18,7 +17,7 @@ describe('eval', function() {
   it('should eval a list of expressions', function() {
     assert.deepEqual(math.eval(['1+2', '3+4', '5+6']), [3, 7, 11]);
     assert.deepEqual(math.eval(['a=3', 'b=4', 'a*b']), [3, 4, 12]);
-    assert.deepEqual(math.eval(new Matrix(['a=3', 'b=4', 'a*b'])), new Matrix([3, 4, 12]));
+    assert.deepEqual(math.eval(math.matrix(['a=3', 'b=4', 'a*b'])), math.matrix([3, 4, 12]));
     assert.deepEqual(math.eval(['a=3', 'b=4', 'a*b']), [3, 4, 12]);
   });
 
@@ -29,24 +28,24 @@ describe('eval', function() {
   });
 
   it('should throw an error if wrong number of arguments', function() {
-    assert.throws(function () {math.eval()},  error.ArgumentsError);
-    assert.throws(function () {math.eval(1,2,3)}, error.ArgumentsError);
+    assert.throws(function () {math.eval();},  error.ArgumentsError);
+    assert.throws(function () {math.eval(1,2,3);}, error.ArgumentsError);
   });
 
   it('should throw an error with a number', function() {
-    assert.throws(function () {math.eval(23)}, TypeError);
+    assert.throws(function () {math.eval(23);}, TypeError);
   });
 
   it('should throw an error with a unit', function() {
-    assert.throws(function () {math.eval(new Unit(5, 'cm'))}, TypeError);
+    assert.throws(function () {math.eval(new Unit(5, 'cm'));}, TypeError);
   });
 
   it('should throw an error with a complex number', function() {
-    assert.throws(function () {math.eval(new Complex(2,3))}, TypeError);
+    assert.throws(function () {math.eval(new Complex(2,3));}, TypeError);
   });
 
   it('should throw an error with a boolean', function() {
-    assert.throws(function () {math.eval(true)}, TypeError);
+    assert.throws(function () {math.eval(true);}, TypeError);
   });
 
   it('should handle the given scope', function() {

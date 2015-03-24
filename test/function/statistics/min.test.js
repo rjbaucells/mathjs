@@ -1,8 +1,6 @@
 var assert = require('assert');
 var BigNumber = require('decimal.js');
 var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
 var min = math.min;
 
@@ -30,7 +28,7 @@ describe('min', function() {
   });
 
   it('should return the min element from a vector array', function() {
-    assert.equal(min(new Matrix([1,3,5,-5,2])), -5);
+    assert.equal(min(math.matrix([1,3,5,-5,2])), -5);
   });
 
   it('should return the max element from a 2d matrix', function() {
@@ -39,7 +37,7 @@ describe('min', function() {
       [ 3, 0,  5],
       [-1, 9, 11]
     ]), -1);
-    assert.deepEqual(min(new Matrix([
+    assert.deepEqual(min(math.matrix([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 9, 11]
@@ -78,27 +76,27 @@ describe('min', function() {
   });
 
   it('should throw an error when called with complex numbers', function() {
-    assert.throws(function () {min(new Complex(2,3), new Complex(2,1))}, TypeError);
-    assert.throws(function () {min(new Complex(2,3), new Complex(2,5))}, TypeError);
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,1));}, TypeError);
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,5));}, TypeError);
 
-    assert.throws(function () {min(new Complex(3,4), 4)}, TypeError);
-    assert.throws(function () {min(new Complex(3,4), 5)}, TypeError);
-    assert.throws(function () {min(5, new Complex(3,4))}, TypeError);
-    assert.throws(function () {min(new Complex(3,4), 6)}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 4);}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 5);}, TypeError);
+    assert.throws(function () {min(5, new Complex(3,4));}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 6);}, TypeError);
   });
 
   it('should throw an error if called a dimension out of range', function() {
-    assert.throws(function() {min([1,2,3], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
-    assert.throws(function() {min([1,2,3], 1)}, /IndexError: Index out of range \(1 > 0\)/);
+    assert.throws(function() {min([1,2,3], -1);}, /IndexError: Index out of range \(-1 < 0\)/);
+    assert.throws(function() {min([1,2,3], 1);}, /IndexError: Index out of range \(1 > 0\)/);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
-    assert.throws(function() {min()});
-    assert.throws(function() {min([], 2, 3)});
+    assert.throws(function() {min();});
+    assert.throws(function() {min([], 2, 3);});
   });
 
   it('should throw an error if called with an empty array', function() {
-    assert.throws(function() {min([])});
+    assert.throws(function() {min([]);});
   });
 
 });

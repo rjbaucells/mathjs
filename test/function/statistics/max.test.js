@@ -26,7 +26,7 @@ describe('max', function() {
   });
 
   it('should return the max element from a vector', function() {
-    assert.equal(max(new Matrix([1,3,5,2,-5])), 5);
+    assert.equal(max(math.matrix([1,3,5,2,-5])), 5);
   });
 
   it('should return the max element from a 2d matrix', function() {
@@ -35,7 +35,7 @@ describe('max', function() {
       [ 3, 0,  5],
       [-1, 11, 9]
     ]), 11);
-    assert.deepEqual(max(new Matrix([
+    assert.deepEqual(max(math.matrix([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 11, 9]

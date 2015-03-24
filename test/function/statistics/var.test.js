@@ -1,7 +1,6 @@
 var assert = require('assert');
 var BigNumber = require('decimal.js');
 var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
 var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
 var variance = math['var'];
@@ -42,12 +41,12 @@ describe('variance', function() {
   });
 
   it('should throw an error in case of unknown type of normalization', function() {
-    assert.throws(function () {variance([2,8], 'foo')}, /Unknown normalization/);
+    assert.throws(function () {variance([2,8], 'foo');}, /Unknown normalization/);
   });
 
   it('should return the variance from an 1d matrix', function() {
-    assert.equal(variance(new Matrix([2,4,6])), 4);
-    assert.equal(variance(new Matrix([5])), 0);
+    assert.equal(variance(math.matrix([2,4,6])), 4);
+    assert.equal(variance(math.matrix([5])), 0);
   });
 
   it('should return the variance element from a 2d array', function() {
@@ -58,25 +57,25 @@ describe('variance', function() {
   });
 
   it('should return the variance element from a 2d matrix', function() {
-    assert.deepEqual(variance(new Matrix([
+    assert.deepEqual(variance(math.matrix([
       [2,4,6],
       [1,3,5]
     ])), 3.5);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
-    assert.throws(function() {variance()});
-    assert.throws(function() {variance([], 2, 3)});
+    assert.throws(function() {variance();});
+    assert.throws(function() {variance([], 2, 3);});
   });
 
   it('should throw an error if called with invalid type of arguments', function() {
-    assert.throws(function() {variance('a', 'b')}, TypeError);
-    assert.throws(function() {variance(new Unit('5cm'), new Unit('10cm'))}, TypeError);
-    assert.throws(function() {variance([2,3,4], 5)}, /Unknown normalization "5"/);
+    assert.throws(function() {variance('a', 'b');}, TypeError);
+    assert.throws(function() {variance(new Unit('5cm'), new Unit('10cm'));}, TypeError);
+    assert.throws(function() {variance([2,3,4], 5);}, /Unknown normalization "5"/);
   });
 
   it('should throw an error if called with an empty array', function() {
-    assert.throws(function() {variance([])});
+    assert.throws(function() {variance([]);});
   });
 
 });

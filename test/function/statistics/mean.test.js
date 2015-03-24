@@ -36,8 +36,8 @@ describe('mean', function() {
   });
 
   it('should return the mean value from a 1d matrix', function() {
-    assert.equal(mean(new Matrix([5])), 5);
-    assert.equal(mean(new Matrix([1,3,5,2,-5])), 1.2);
+    assert.equal(mean(math.matrix([5])), 5);
+    assert.equal(mean(math.matrix([1,3,5,2,-5])), 1.2);
   });
 
   it('should return the mean for each vector on the last dimension', function() {
@@ -45,7 +45,7 @@ describe('mean', function() {
       [ 2, 4],
       [ 6, 8]
     ]), 5);
-    assert.deepEqual(mean(new Matrix([
+    assert.deepEqual(mean(math.matrix([
       [ 2, 4],
       [ 6, 8]
     ])), 5);

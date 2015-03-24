@@ -2,11 +2,11 @@ var assert= require('assert');
 var Complex = require('../../lib/type/Complex');
 var Range = require('../../lib/type/Range');
 var Index = require('../../lib/type/Index');
-var Matrix = require('../../lib/type/Matrix');
 var Unit = require('../../lib/type/Unit');
 var Help = require('../../lib/type/Help');
 var BigNumber = require('../../lib/type/BigNumber');
 var ResultSet = require('../../lib/type/ResultSet');
+var math = require('../../index');
 
 describe('replacer', function () {
 
@@ -58,7 +58,7 @@ describe('replacer', function () {
   });
 
   it('should stringify a Matrix', function () {
-    var m = new Matrix([[1,2],[3,4]]);
+    var m = math.matrix([[1,2],[3,4]]);
     var json = '{"mathjs":"Matrix","data":[[1,2],[3,4]]}';
 
     assert.deepEqual(JSON.stringify(m), json);
@@ -72,7 +72,7 @@ describe('replacer', function () {
 
   it('should stringify a Matrix containing a complex number', function () {
     var c = new Complex(4, 5);
-    var m = new Matrix([[1,2],[3,c]]);
+    var m = math.matrix([[1,2],[3,c]]);
     var json = '{"mathjs":"Matrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]]}';
 
     assert.deepEqual(JSON.stringify(m), json);
