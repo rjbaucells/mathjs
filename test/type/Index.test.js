@@ -1,8 +1,9 @@
 // test data type Index
 var assert = require('assert');
-var Index = require('../../lib/type/Index');
-var Matrix = require('../../lib/type/Matrix');
-var Range = require('../../lib/type/Range');
+var math = require('../../index');
+var Index = math.type.Index;
+var Matrix = math.type.Matrix;
+var Range = math.type.Range;
 
 describe('Index', function () {
 
@@ -22,7 +23,7 @@ describe('Index', function () {
   });
 
   it('should create an Index from a Matrix', function () {
-    assert.deepEqual(new Index(new Matrix([0, 10]))._ranges, [{start:0, end:10, step:1}]);
+    assert.deepEqual(new Index(math.matrix([0, 10]))._ranges, [{start:0, end:10, step:1}]);
   });
 
   it('should create an Index from an array with ranges', function () {
@@ -85,6 +86,26 @@ describe('Index', function () {
     assert.equal(new Index([0,6,2]).toString(), '[0:2:6]');
   });
 
+  it('toJSON', function () {
+    assert.deepEqual(new Index([0,10], 2).toJSON(),
+        {'mathjs': 'Index', ranges: [
+          new Range(0, 10, 1),
+          new Range(2, 3, 1)
+        ]});
+  });
+
+  it('fromJSON', function () {
+    var json = {ranges: [
+      new Range(0, 10, 1),
+      new Range(2, 3, 1)
+    ]};
+    var i1 = new Index([0,10], 2);
+
+    var i2 = Index.fromJSON(json);
+    assert.ok(i2 instanceof Index);
+    assert.deepEqual(i2, i1);
+  });
+
   it('should get the range for a given dimension', function () {
     var index = new Index(2, [0, 8, 2], [3,-1,-1]);
 
@@ -120,7 +141,7 @@ describe('Index', function () {
 
   it('should test whether an object is an Index', function () {
     assert.equal(Index.isIndex(new Index()), true);
-    assert.equal(Index.isIndex(new Matrix()), false);
+    assert.equal(Index.isIndex(math.matrix()), false);
     assert.equal(Index.isIndex(23.4), false);
     assert.equal(Index.isIndex([]), false);
     assert.equal(Index.isIndex({}), false);

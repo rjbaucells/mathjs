@@ -200,11 +200,47 @@ describe('AssignmentNode', function() {
     assert.equal(n.toString(), 'b = 3');
   });
 
+  it ('should stringify an AssignmentNode containing and AssignmentNode', function () {
+    var a = new ConstantNode(2);
+    var b = new AssignmentNode('a', a);
+
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.toString(), 'b = (a = 2)');
+  });
+
   it ('should LaTeX a AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
     assert.equal(n.toTex(), '{b}={3}');
+  });
+
+  it ('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
+    var a = new ConstantNode(2);
+    var b = new AssignmentNode('a', a);
+
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.toTex(), '{b}=\\left({{a}={2}}\\right)');
+  });
+
+  it ('should LaTeX an AssignmentNode with custom toTex', function () {
+    //Also checks if custom funcions get passed to the children
+    var customFunction = function (node, callback) {
+      if (node.type === 'AssignmentNode') {
+        return node.name + '\\mbox{equals}' + node.expr.toTex(callback);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new ConstantNode(1);
+
+    var n = new AssignmentNode('a', a);
+
+    assert.equal(n.toTex(customFunction), 'a\\mbox{equals}const\\left(1, number\\right)');
   });
 
 });

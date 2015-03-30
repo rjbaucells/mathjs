@@ -7,7 +7,11 @@ var assert = require('assert'),
     cos = math.cos,
     complex = math.complex,
     matrix = math.matrix,
-    unit = math.unit;
+    unit = math.unit,
+    bigmath = math.create({number: 'bignumber', precision: 20}),
+    acosBig = bigmath.acos,
+    cosBig = bigmath.cos,
+    Big = bigmath.bignumber;
 
 describe('acos', function() {
   it('should return the arccos of a boolean', function () {
@@ -27,8 +31,21 @@ describe('acos', function() {
     approx.equal(acos(1) / pi, 0);
   });
 
-  it('should return the arccos of a bignumber (downgrades to number)', function() {
-    approx.equal(acos(math.bignumber(-1)), pi);
+  it('should return the arccos of a bignumber', function() {
+    var arg = Big(-1);
+    assert.deepEqual(acosBig(arg).toString(), bigmath.pi.toString());
+    assert.deepEqual(acosBig(Big(-0.5)), Big('2.0943951023931954923'));
+    assert.deepEqual(acosBig(Big(0)), Big('1.5707963267948966192'));
+    assert.deepEqual(acosBig(Big(0.5)), Big('1.0471975511965977462'));
+    assert.deepEqual(acosBig(Big(1)), Big(0));
+
+    // Hit Newton's method case
+    bigmath.config({precision: 61});
+    assert.deepEqual(acosBig(Big(0.00000001)), Big('1.5707963167948966192313' +
+                                                     '2152497308477543191053' +
+                                                     '3020886243820359'));
+    //Make sure arg was not changed
+    assert.deepEqual(arg, Big(-1));
   });
 
   it('should be the inverse function of cos', function() {
@@ -37,6 +54,24 @@ describe('acos', function() {
     approx.equal(acos(cos(0.1)), 0.1);
     approx.equal(acos(cos(0.5)), 0.5);
     approx.equal(acos(cos(2)), 2);
+  });
+
+  it('should be the inverse function of bignumber cos', function() {
+    bigmath.config({precision: 20});
+    assert.deepEqual(acosBig(cosBig(Big(-1))), Big(1));
+    assert.deepEqual(acosBig(cosBig(Big(0))), Big(0));
+    assert.deepEqual(acosBig(cosBig(Big(0.1))), Big(0.1));
+    assert.deepEqual(acosBig(cosBig(Big(0.5))), Big(0.5));
+    assert.deepEqual(acosBig(cosBig(Big(2))), Big(2));
+  });
+
+  it('should throw an error if the bignumber result is complex', function() {
+    assert.throws(function () {
+      acos(Big(1.1));
+    }, /acos() only has non-complex values for |x| <= 1./);
+    assert.throws(function () {
+      acos(Big(-1.1));
+    }, /acos() only has non-complex values for |x| <= 1./);
   });
 
   it('should return the arccos of a complex number', function() {

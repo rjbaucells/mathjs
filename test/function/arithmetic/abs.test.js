@@ -1,7 +1,7 @@
 // test abs
 var assert = require('assert'),
-    error = require('../../../lib/error'),
-    math = require('../../../index');
+    math = require('../../../index'),
+    error = math.error;
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {
@@ -28,6 +28,8 @@ describe('abs', function () {
 
   it('should return the absolute value of a complex number', function () {
     assert.equal(math.abs(math.complex(3, -4)), 5);
+    assert.equal(math.abs(math.complex(1e200, -4e200)), 4.12310562561766e+200);
+    assert.equal(math.norm(math.complex(-4e200, 1e200)), 4.12310562561766e+200);
   });
 
   it('should return the absolute value of all elements in a matrix', function () {
