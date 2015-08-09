@@ -1,5 +1,96 @@
 # History
 
+
+## 2015-07-29, version 2.0.1
+
+- Fixed operations with mixed fractions and numbers be converted to numbers
+  instead of fractions.
+
+
+## 2015-07-28, version 2.0.0
+
+- Large internal refactoring:
+  - performance improvements.
+  - allows to create custom bundles
+  - functions are composed using `typed-function` and are extensible
+- Implemented support for fractions, powered by the library `fraction.js`.
+- Implemented matrix LU decomposition with partial pivoting and a LU based 
+  linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
+- Implemented a new configuration option `predictable`, which can be set to
+  true in order to ensure predictable function output types.
+- Implemented function `intersect`. Thanks @kv-kunalvyas.
+- Implemented support for adding `toTex` properties to custom functions.
+  Thanks @FSMaxB.
+- Implemented support for complex values to `nthRoot`. Thanks @gangachris.
+- Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
+  `isPositive`, and `isZero`.
+
+### breaking changes
+
+- String input is now converted to numbers by default for all functions. 
+- Adding two strings will no longer concatenate them, but will convert the 
+  strings to numbers and add them.
+- Function `index` does no longer accept an array `[start, end, step]`, but
+  instead accepts an array with arbitrary index values. It also accepts
+  a `Range` object as input.
+- Function `typeof` no longer returns lower case names, but now returns lower
+  case names for primitives (like `number`, `boolean`, `string`), and 
+  upper-camel-case for non-primitives (like `Array`, `Complex`, `Function`).
+- Function `import` no longer supports a module name as argument. Instead,
+  modules can be loaded using require: `math.import(require('module-name'))`.
+- Function `import` has a new option `silent` to ignore errors, and throws
+  errors on duplicates by default.
+- Method `Node.compile()` no longer needs `math` to be passed as argument.
+- Reintroduced method `Node.eval([scope])`.
+- Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
+- The size of Arrays is no longer validated. Matrices will validate this on
+  creation.
+
+
+## 2015-07-12, version 1.7.1
+
+- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results 
+  for very small values. (backported from v2)
+- Fixed #405: Parser throws error when defining a function in a multiline 
+  expression.
+
+
+## 2015-05-31, version 1.7.0
+
+- Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
+- Implemented functions `stirlingS2`, `bellNumbers`, `composition`, and 
+  `multinomial`. Thanks @devanp92.
+- Improved the performance of `median` (see #373). Thanks @BigFav.
+- Extended the command line interface with a `mode` option to output either
+  the expressions result, string representation, or tex representation.
+  Thanks @FSMaxB.
+- Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
+- Fixed `Node.transform` not recursing over replaced parts of the 
+  node tree (see #349).
+- Fixed #381: issue in docs of `randomInt`.
+
+
+## 2015-04-22, version 1.6.0
+
+- Improvements in `toTex`. Thanks @FSMaxB.
+- Fixed #328: `abs(0 + 0i)` evaluated to `NaN`.
+- Fixed not being able to override lazy loaded constants.
+
+
+## 2015-04-09, version 1.5.2
+
+- Fixed #313: parsed functions did not handle recursive calls correctly.
+- Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now 
+  following SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
+- Performance improvements in parsed functions.
+
+
+## 2015-04-08, version 1.5.1
+
+- Fixed #316: a bug in rounding values when formatting.
+- Fixed #317, #319: a bug in formatting negative values.
+
+
 ## 2015-03-28, version 1.5.0
 
 - Added unit `stone` (6.35 kg).

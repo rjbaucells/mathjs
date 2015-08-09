@@ -89,8 +89,13 @@ describe('acsch', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acsch()}, error.ArgumentsError);
-    assert.throws(function () {acsch(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acsch()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acsch(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX acsch', function () {
+    var expression = math.parse('acsch(2)');
+    assert.equal(expression.toTex(), '\\mathrm{csch}^{-1}\\left(2\\right)');
   });
 
 });

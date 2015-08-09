@@ -100,8 +100,13 @@ describe('sec', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sec()}, error.ArgumentsError);
-    assert.throws(function () {sec(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {sec()}, /TypeError: Too few arguments/);
+    assert.throws(function () {sec(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX sec', function () {
+    var expression = math.parse('sec(1)');
+    assert.equal(expression.toTex(), '\\sec\\left(1\\right)');
   });
 
 });

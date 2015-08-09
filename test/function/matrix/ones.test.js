@@ -13,16 +13,10 @@ describe('ones', function() {
     assert.deepEqual(ones(matrix([])), matrix());
   });
   
-  it('should create an empty matrix, CCS format', function () {
-    assert.deepEqual(ones('ccs'), matrix('ccs'));
-    assert.deepEqual(ones([], 'ccs'), matrix([], 'ccs'));
-    assert.deepEqual(ones(matrix([]), 'ccs'), matrix('ccs'));
-  });
-  
-  it('should create an empty matrix, CRS format', function () {
-    assert.deepEqual(ones('crs'), matrix('crs'));
-    assert.deepEqual(ones([], 'crs'), matrix([], 'crs'));
-    assert.deepEqual(ones(matrix([]), 'crs'), matrix('crs'));
+  it('should create an empty matrix, sparse', function () {
+    assert.deepEqual(ones('sparse'), matrix('sparse'));
+    assert.deepEqual(ones([], 'sparse'), matrix([], 'sparse'));
+    assert.deepEqual(ones(matrix([]), 'sparse'), matrix('sparse'));
   });
 
   it('should create a vector with ones', function () {
@@ -76,5 +70,10 @@ describe('ones', function() {
   });
 
   // TODO: test with invalid input
+
+  it('should LaTeX ones', function () {
+    var expression = math.parse('ones(2)');
+    assert.equal(expression.toTex(), '\\mathrm{ones}\\left(2\\right)');
+  });
 
 });

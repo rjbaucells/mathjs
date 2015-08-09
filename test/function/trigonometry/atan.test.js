@@ -104,8 +104,13 @@ describe('atan', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {atan()}, error.ArgumentsError);
-    assert.throws(function () {atan(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {atan()}, /TypeError: Too few arguments/);
+    assert.throws(function () {atan(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX atan', function () {
+    var expression = math.parse('atan(10)');
+    assert.equal(expression.toTex(), '\\tan^{-1}\\left(10\\right)');
   });
 
 });

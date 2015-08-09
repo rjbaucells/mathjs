@@ -1,5 +1,13 @@
 # Function reference (categorical)
 
+## algebra
+
+- [lsolve(L, b)](lsolve.md)
+- [lup(A)](lup.md)
+- [lusolve(A, b)](lusolve.md)
+- [slu(A, order, threshold)](slu.md)
+- [usolve(U, b)](usolve.md)
+
 ## arithmetic
 
 - [abs(x)](abs.md)
@@ -20,7 +28,7 @@
 - [mod(x, y)](mod.md)
 - [multiply(x, y)](multiply.md)
 - [norm(x [, p])](norm.md)
-- [nthRoot(a, root)](nthRoot.md)
+- [nthRoot(a)](nthRoot.md)
 - [pow(x, y)](pow.md)
 - [round(x [, n])](round.md)
 - [sign(x)](sign.md)
@@ -41,6 +49,12 @@
 - [rightArithShift(x, y)](rightArithShift.md)
 - [rightLogShift(x, y)](rightLogShift.md)
 
+## combinatorics
+
+- [bellNumbers(n)](bellNumbers.md)
+- [composition(n, k)](composition.md)
+- [stirlingS2(n, k)](stirlingS2.md)
+
 ## complex
 
 - [arg(x)](arg.md)
@@ -54,10 +68,9 @@
 - [boolean(x)](boolean.md)
 - [chain(value)](chain.md)
 - [complex(re, im)](complex.md)
-- [index(range1, range2, ...)](index.md)
+- [fraction(numerator, denominator)](fraction.md)
 - [matrix(x)](matrix.md)
 - [number(value)](number.md)
-- [parser()](parser.md)
 - [string(value)](string.md)
 - [unit(x)](unit.md)
 
@@ -67,6 +80,11 @@
 - [eval(expr [, scope])](eval.md)
 - [help(search)](help.md)
 - [parse(expr [, scope])](parse.md)
+- [parser()](parser.md)
+
+## geometry
+
+- [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.md)
 
 ## logical
 
@@ -101,7 +119,8 @@
 - [distribution(name)](distribution.md)
 - [factorial(n)](factorial.md)
 - [gamma(n)](gamma.md)
-- [permutations(n)](permutations.md)
+- [multinomial(a)](multinomial.md)
+- [permutations(n [, k])](permutations.md)
 - [pickRandom(array)](pickRandom.md)
 - [random([min, max])](random.md)
 - [randomInt([min, max])](randomInt.md)
@@ -124,6 +143,7 @@
 - [median(a, b, c, ...)](median.md)
 - [min(a, b, c, ...)](min.md)
 - [prod(a, b, c, ...)](prod.md)
+- [quantileSeq(A, prob[, sorted])](quantileSeq.md)
 - [std(a, b, c, ...)](std.md)
 - [sum(a, b, c, ...)](sum.md)
 - [var(a, b, c, ...)](var.md)
@@ -166,8 +186,13 @@
 - [filter(x, test)](filter.md)
 - [forEach(x, callback)](forEach.md)
 - [format(value [, precision])](format.md)
-- [import(filename | object, override)](import.md)
+- [isInteger(x)](isInteger.md)
+- [isNegative(x)](isNegative.md)
+- [isNumeric(x)](isNumeric.md)
+- [isPositive(x)](isPositive.md)
+- [isZero(x)](isZero.md)
 - [map(x, callback)](map.md)
+- [partitionSelect(x, k)](partitionSelect.md)
 - [print(template, values [, precision])](print.md)
 - [sort(x)](sort.md)
 - [typeof(x)](typeof.md)

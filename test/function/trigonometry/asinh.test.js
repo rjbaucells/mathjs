@@ -90,8 +90,13 @@ describe('asinh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {asinh()}, error.ArgumentsError);
-    assert.throws(function () {asinh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {asinh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {asinh(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX asinh', function () {
+    var expression = math.parse('asinh(2)');
+    assert.equal(expression.toTex(), '\\sinh^{-1}\\left(2\\right)');
   });
 
 });

@@ -1,12 +1,12 @@
 // test cube
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    unit = math.unit,
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    range = math.range,
-    cube = math.cube;
+var assert = require('assert');
+var math = require('../../../index');
+var unit = math.unit;
+var bignumber = math.bignumber;
+var fraction = math.fraction;
+var matrix = math.matrix;
+var range = math.range;
+var cube = math.cube;
 
 describe('cube', function() {
   it('should return the cube of a boolean', function () {
@@ -30,6 +30,13 @@ describe('cube', function() {
     assert.deepEqual(cube(bignumber(0)), bignumber(0));
   });
 
+  it('should return the cube of a fraction', function() {
+    var a = fraction(0.5);
+    assert(cube(a) instanceof math.type.Fraction);
+    assert.equal(cube(a).toString(), '0.125');
+    assert.equal(a.toString(), '0.5');
+  });
+
   it('should return the cube of a complex number', function() {
     assert.deepEqual(cube(math.complex('2i')), math.complex('-8i'));
     assert.deepEqual(cube(math.complex('2+3i')), math.complex('-46+9i'));
@@ -45,8 +52,8 @@ describe('cube', function() {
   });
 
   it('should throw an error if there\'s wrong number of args', function() {
-    assert.throws(function () {cube()}, error.ArgumentsError);
-    assert.throws(function () {cube(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {cube()}, /TypeError: Too few arguments/);
+    assert.throws(function () {cube(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should cube each element in a matrix, array or range', function() {
@@ -55,6 +62,11 @@ describe('cube', function() {
     assert.deepEqual(cube([2,3,4,5]), [8,27,64,125]);
     assert.deepEqual(cube(matrix([2,3,4,5])), matrix([8,27,64,125]));
     assert.deepEqual(cube(matrix([[1,2],[3,4]])), matrix([[1,8],[27,64]]));
+  });
+
+  it('should LaTeX cube', function () {
+    var expression = math.parse('cube(2)');
+    assert.equal(expression.toTex(), '\\left(2\\right)^3');
   });
 
 });

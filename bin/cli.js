@@ -9,16 +9,21 @@
  *
  * Usage:
  *
- *     mathjs [scriptfile] {OPTIONS}
+ *     mathjs [scriptfile(s)] {OPTIONS}
  *
  * Options:
  *
- *     --version, -v  Show application version
- *        --help, -h  Show this message
+ *     --version, -v       Show application version
+ *     --help,    -h       Show this message
+ *     --tex               Generate LaTeX instead of evaluating
+ *     --string            Generate string instead of evaluating
+ *     --parenthesis=      Set the parenthesis option to
+ *                         either of "keep", "auto" and "all"
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
  *     mathjs script.txt                      Run a script file
+ *     mathjs script1.txt script2.txt         Run two script files
  *     mathjs script.txt > results.txt        Run a script file, output to file
  *     cat script.txt | mathjs                Run input stream
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
@@ -132,8 +137,10 @@ function completer (text) {
  * the output.
  * @param input   Input stream
  * @param output  Output stream
+ * @param mode    Output mode
+ * @param parenthesis Parenthesis option
  */
-function runStream (input, output) {
+function runStream (input, output, mode, parenthesis) {
   var readline = require('readline'),
       rl = readline.createInterface({
         input: input || process.stdin,
@@ -151,52 +158,78 @@ function runStream (input, output) {
   rl.on('line', function(line) {
     var expr = line.trim();
 
-    // check for exit
-    if (expr.toLowerCase() == 'exit' || expr.toLowerCase() == 'quit') {
-      // exit application
-      rl.close();
-    }
-    if (expr.toLowerCase() == 'clear') {
-      // clear memory
-      parser.clear();
-      console.log('memory cleared');
+    switch (expr.toLowerCase()) {
+      case 'quit':
+      case 'exit':
+        // exit application
+        rl.close();
+        break;
+      case 'clear':
+        // clear memory
+        parser.clear();
+        console.log('memory cleared');
 
-      // get next input
-      if (rl.output.isTTY) {
-        rl.prompt();
-      }
-    }
-    else {
-      // evaluate expression
-      if (expr) {
-        try {
-          var res = parser.eval(expr);
-          if (res instanceof math.type.ResultSet) {
-            res.entries.forEach(function (entry) {
-              console.log(math.format(entry, PRECISION));
-            });
-            if (res.entries.length) {
-              // set last answer from the ResultSet as ans
-              parser.set('ans', res.entries[res.entries.length - 1]);
+        // get next input
+        if (rl.output.isTTY) {
+          rl.prompt();
+        }
+        break;
+      default:
+        if (!expr) {
+          break;
+        }
+        switch (mode) {
+          case 'eval':
+            // evaluate expression
+            try {
+              var res = parser.eval(expr);
+              if (res instanceof math.type.ResultSet) {
+                res.entries.forEach(function (entry) {
+                  console.log(math.format(entry, PRECISION));
+                });
+                if (res.entries.length) {
+                  // set last answer from the ResultSet as ans
+                  parser.set('ans', res.entries[res.entries.length - 1]);
+                }
+              }
+              else if (res instanceof math.type.Help) {
+                console.log(res.toString());
+              }
+              else {
+                parser.set('ans', res);
+                console.log(math.format(res, PRECISION));
+              }
             }
-          }
-          else if (res instanceof math.type.Help) {
-            console.log(res.toText(math));
-          }
-          else {
-            parser.set('ans', res);
-            console.log(math.format(res, PRECISION));
-          }
-        }
-        catch (err) {
-          console.log(err.toString());
-        }
-      }
+            catch (err) {
+              console.log(err.toString());
+            }
+            break;
 
-      // get next input
-      if (rl.output.isTTY) {
-        rl.prompt();
-      }
+          case 'string':
+            try {
+              var string = math.parse(expr).toString({parenthesis: parenthesis});
+              console.log(string);
+            }
+            catch (err) {
+              console.log(err.toString());
+            }
+            break;
+
+          case 'tex':
+            try {
+              var tex = math.parse(expr).toTex({parenthesis: parenthesis});
+              console.log(tex);
+            }
+            catch (err) {
+              console.log(err.toString());
+            }
+            break;
+        }
+    }
+
+    // get next input
+    if (rl.output.isTTY) {
+      rl.prompt();
     }
   });
 
@@ -220,6 +253,7 @@ function outputVersion () {
       var version = pkg && pkg.version ? 'v' + pkg.version : 'unknown';
       console.log(version);
     }
+    process.exit(0);
   });
 }
 
@@ -235,38 +269,76 @@ function outputHelp() {
   console.log('functions, and a flexible expression parser.');
   console.log();
   console.log('Usage:');
-  console.log('    mathjs [scriptfile] {OPTIONS}');
+  console.log('    mathjs [scriptfile(s)] {OPTIONS}');
   console.log();
   console.log('Options:');
-  console.log('    --version, -v  Show application version');
-  console.log('       --help, -h  Show this message');
+  console.log('    --version, -v       Show application version');
+  console.log('    --help,    -h       Show this message');
+  console.log('    --tex               Generate LaTeX instead of evaluating');
+  console.log('    --string            Generate string instead of evaluating');
+  console.log('    --parenthesis=      Set the parenthesis option to');
+  console.log('                        either of "keep", "auto" and "all"');
   console.log();
   console.log('Example usage:');
   console.log('    mathjs                                Open a command prompt');
   console.log('    mathjs script.txt                     Run a script file');
+  console.log('    mathjs script.txt script2.txt         Run two script files');
   console.log('    mathjs script.txt > results.txt       Run a script file, output to file');
   console.log('    cat script.txt | mathjs               Run input streaml');
   console.log('    cat script.txt | mathjs > results.txt Run input stream, output to file');
   console.log();
+  process.exit(0);
 }
 
 /**
  * Process input and output, based on the command line arguments
  */
-if (process.argv.length > 2) {
-  var arg = process.argv[2];
-  if (arg == '-v' || arg == '--version') {
+var queue = []; //queue of scripts that need to be processed
+var mode = 'eval'; //one of 'eval', 'tex' or 'string'
+var parenthesis = 'keep';
+
+process.argv.forEach(function (arg, index) {
+if (index < 2) {
+  return;
+}
+
+switch (arg) {
+  case '-v':
+  case '--version':
     outputVersion();
-  }
-  else if (arg == '-h' || arg == '--help') {
+    break;
+  case '-h':
+  case '--help':
     outputHelp();
-  }
-  else {
-    // run a script file
-    runStream(fs.createReadStream(arg), process.stdout);
-  }
+    break;
+  case '--tex':
+    mode = 'tex';
+    break;
+  case '--string':
+    mode = 'string';
+    break;
+  case '--parenthesis=keep':
+    parenthesis = 'keep';
+    break;
+  case '--parenthesis=auto':
+    parenthesis = 'auto';
+    break;
+  case '--parenthesis=all':
+    parenthesis = 'all';
+    break
+  default:
+    queue.push(arg);
+}
+});
+
+if (queue.length === 0) {
+// run a stream, can be user input or pipe input
+runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
-  // run a stream, can be user input or pipe input
-  runStream(process.stdin, process.stdout);
+//work through the queue
+queue.forEach(function (arg) {
+  // run a script file
+  runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
+});
 }

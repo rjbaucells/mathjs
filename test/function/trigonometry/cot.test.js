@@ -57,7 +57,7 @@ describe('cot', function() {
 
     /* Pass in more digits of pi. */
     var biggerPi = biggermath.pi;
-    console.log(biggerPi.constructor.precision);
+    //console.log(biggerPi.constructor.precision);
     assert.deepEqual(bigmath.cot(biggerPi.div(4)).toString(), '1');
     assert.deepEqual(bigmath.cot(biggerPi.times(3).div(4)).toString(), '-1');
     assert.deepEqual(bigmath.cot(biggerPi.times(5).div(4)).toString(), '1');
@@ -100,8 +100,13 @@ describe('cot', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {cot()}, error.ArgumentsError);
-    assert.throws(function () {cot(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {cot()}, /TypeError: Too few arguments/);
+    assert.throws(function () {cot(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX cot', function () {
+    var expression = math.parse('cot(1)');
+    assert.equal(expression.toTex(), '\\cot\\left(1\\right)');
   });
 
 });

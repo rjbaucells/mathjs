@@ -81,7 +81,12 @@ describe('tanh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {tanh()}, error.ArgumentsError);
-    assert.throws(function () {tanh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {tanh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {tanh(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX tanh', function () {
+    var expression = math.parse('tanh(1)');
+    assert.equal(expression.toTex(), '\\tanh\\left(1\\right)');
   });
 });

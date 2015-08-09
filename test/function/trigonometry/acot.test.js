@@ -108,8 +108,13 @@ describe('acot', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acot()}, error.ArgumentsError);
-    assert.throws(function () {acot(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acot()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acot(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should LaTeX acot', function () {
+    var expression = math.parse('acot(2)');
+    assert.equal(expression.toTex(), '\\cot^{-1}\\left(2\\right)');
   });
 
 });
